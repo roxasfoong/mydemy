@@ -26,6 +26,9 @@ class IndexController extends Controller
     public function CourseDetails($id,$slug){
 
         $course = Course::find($id);
+        if (!$course) {
+            abort(404); // Redirect to 404 page
+        }
         $goals = Course_goal::where('course_id',$id)->orderBy('id','DESC')->get();
 
         $ins_id = $course->instructor_id; 

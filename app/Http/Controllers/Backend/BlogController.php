@@ -189,6 +189,9 @@ class BlogController extends Controller
     public function BlogDetails($slug){
 
         $blog = BlogPost::where('post_slug',$slug)->first();
+        if (!$blog) {
+            abort(404); // Redirect to 404 page
+        }
         $tags = $blog->post_tags;
         $tags_all = explode(',',$tags);
         $bcategory = BlogCategory::latest()->get();

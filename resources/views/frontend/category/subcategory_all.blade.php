@@ -1,6 +1,11 @@
 @extends('frontend.master')
 @section('home')
 @section('title')
+@php
+if (!$subcategory) {
+    abort(404); // Redirect to 404 page
+}
+@endphp
 {{ $subcategory->subcategory_name }} | Ez Buy & Learn Online Course
 @endsection
 
