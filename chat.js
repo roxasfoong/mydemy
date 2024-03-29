@@ -1,18 +1,27 @@
 import express from 'express';
-import http from 'http';
+import https from 'https';
 import { Server as SocketIOServer } from 'socket.io';
-
+import fs from 'fs'; // Import File System module
 
 const app = express();
 var removeCounter = 0;
-
-
-const server = http.createServer(app);
 var userSocketMap = [];
+
+// Load SSL/TLS certificates and keys
+const options = 
+
+    {
+        key: fs.readFileSync('/etc/letsencrypt/live/www.roxas-foong.site/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/www.roxas-foong.site/fullchain.pem')
+    };
+    // Add more certificate/key pairs as needed
+
+
+const server = https.createServer(options, app);
 const io = new SocketIOServer(server, {
     cors: {
        // Allow requests from this origin
-      origin: "http://*.roxas-foong.site",
+      origin: ["https://www.roxas-foong.site","https://roxas-foong.site"],
       methods: ["GET", "POST"], // Allow these HTTP methods
       credentials: true,
     }

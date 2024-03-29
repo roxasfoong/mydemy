@@ -14,7 +14,7 @@
 var selectUserID = 0;
     var currentUserID = {{$currentUser->id}}
     loadTotalMessage(currentUserID,selectUserID);
-                                    const socket = io("http://roxas-foong.site", {
+                                    const socket = io("https://www.roxas-foong.site:3000", {
   									withCredentials: true,
   									transports: ["polling","websocket"]
 									});
