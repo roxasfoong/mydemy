@@ -77,12 +77,12 @@
         <div class="payment-option-wrap">
     <div class="payment-tab is-active">
         <div class="payment-tab-toggle">
-            <input checked id="directPayment" name="payment_option" type="radio" value="handcash">
+            <input checked id="directPayment" name="cash_delivery" type="radio" value="handcash">
             <label for="directPayment">Direct Payment</label>
         </div>
 
         <div class="payment-tab-toggle">
-            <input id="stripePayment" name="payment_option" type="radio" value="stripe">
+            <input id="stripePayment" name="cash_delivery" type="radio" value="stripe">
             <label for="stripePayment">Stripe Payment</label>
         </div>
     </div><!-- end payment-tab -->

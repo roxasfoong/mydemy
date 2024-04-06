@@ -1,0 +1,56 @@
+[33mcommit 5436df245e76f720782cc3abb300237609659f37[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Roxas Foong <roxas.foong@gmail.com>
+Date:   Fri Mar 29 09:40:17 2024 +0000
+
+    Fixed Live Chat Not Working After Add SSL Certificate
+
+[1mdiff --git a/chat.js b/chat.js[m
+[1mindex dc23d8a0..b8bddaca 100755[m
+[1m--- a/chat.js[m
+[1m+++ b/chat.js[m
+[36m@@ -1,18 +1,27 @@[m
+ import express from 'express';[m
+[31m-import http from 'http';[m
+[32m+[m[32mimport https from 'https';[m
+ import { Server as SocketIOServer } from 'socket.io';[m
+[31m-[m
+[32m+[m[32mimport fs from 'fs'; // Import File System module[m
+ [m
+ const app = express();[m
+ var removeCounter = 0;[m
+[32m+[m[32mvar userSocketMap = [];[m
+ [m
+[32m+[m[32m// Load SSL/TLS certificates and keys[m
+[32m+[m[32mconst options =[m[41m [m
+ [m
+[31m-const server = http.createServer(app);[m
+[31m-var userSocketMap = [];[m
+[32m+[m[32m    {[m
+[32m+[m[32m        key: fs.readFileSync('/etc/letsencrypt/live/www.roxas-foong.site/privkey.pem'),[m
+[32m+[m[32m        cert: fs.readFileSync('/etc/letsencrypt/live/www.roxas-foong.site/fullchain.pem')[m
+[32m+[m[32m    };[m
+[32m+[m[32m    // Add more certificate/key pairs as needed[m
+[32m+[m
+[32m+[m
+[32m+[m[32mconst server = https.createServer(options, app);[m
+ const io = new SocketIOServer(server, {[m
+     cors: {[m
+        // Allow requests from this origin[m
+[31m-      origin: "http://*.roxas-foong.site",[m
+[32m+[m[32m      origin: ["https://www.roxas-foong.site","https://roxas-foong.site"],[m
+       methods: ["GET", "POST"], // Allow these HTTP methods[m
+       credentials: true,[m
+     }[m
+[1mdiff --git a/resources/views/frontend/body/chatscript.blade.php b/resources/views/frontend/body/chatscript.blade.php[m
+[1mindex a696a8e3..6c37c629 100755[m
+[1m--- a/resources/views/frontend/body/chatscript.blade.php[m
+[1m+++ b/resources/views/frontend/body/chatscript.blade.php[m
+[36m@@ -14,7 +14,7 @@[m
+ var selectUserID = 0;[m
+     var currentUserID = {{$currentUser->id}}[m
+     loadTotalMessage(currentUserID,selectUserID);[m
+[31m-                                    const socket = io("http://roxas-foong.site", {[m
+[32m+[m[32m                                    const socket = io("https://www.roxas-foong.site:3000", {[m
+   									withCredentials: true,[m
+   									transports: ["polling","websocket"][m
+ 									});[m

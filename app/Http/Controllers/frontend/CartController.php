@@ -24,7 +24,7 @@ use Stripe;
 use App\Models\User;
 use App\Notifications\OrderComplete;
 use Illuminate\Support\Facades\Notification;
-
+ 
 class CartController extends Controller
 {
     public function AddToCart(Request $request, $id){
